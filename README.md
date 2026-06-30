@@ -96,21 +96,6 @@ Build an AI-native code review system that:
 
 ---
 
-## 🏗️ High-Level Architecture
-Frontend (React + TS)
-        │
-        ▼
-Backend (Spring Boot 3)
-        │
-┌───────┼────────┐
-▼       ▼        ▼
-Auth  Review  AI Layer
-Service Service (LLM Abstraction)
-        │
-        ▼
-PostgreSQL + pgvector
-
-
 
 📌 Detailed architecture: `docs/architecture.md`
 
@@ -151,17 +136,20 @@ PostgreSQL + pgvector
 ```bash
 git clone https://github.com/<your-repo>/ai-code-review-assistant.git
 cd ai-code-review-assistant
+```
 
 ### 2. Start Infrastructure
 
 ```bash
 docker-compose up -d
+```
 
 ### 3. Run Backend
 
 ```bash
 cd backend
 ./mvnw spring-boot:run
+```
 
 
 ### 4. Run Frontend
@@ -170,6 +158,7 @@ cd backend
 cd frontend
 npm install
 npm run dev
+```
 
 📁 Project Structure
 
@@ -179,3 +168,4 @@ docs/      → Architecture & design docs
 adr/       → Architecture decision records
 docker/    → Infrastructure setup
 scripts/   → Utility scripts
+
