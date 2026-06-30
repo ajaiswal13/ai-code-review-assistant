@@ -134,7 +134,7 @@ Build an AI-native code review system that:
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/<your-repo>/ai-code-review-assistant.git
+git clone https://github.com/ajaiswal13/ai-code-review-assistant.git
 cd ai-code-review-assistant
 ```
 
