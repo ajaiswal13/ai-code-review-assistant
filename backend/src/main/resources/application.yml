@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: ai-code-review-assistant
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ai_review_db
+    username: ai_user
+    password: ai_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    open-in-view: false
+
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    root: INFO
