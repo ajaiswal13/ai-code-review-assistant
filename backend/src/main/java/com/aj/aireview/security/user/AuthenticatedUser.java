@@ -1,4 +1,4 @@
-package com.aj.aireview.security;
+package com.aj.aireview.security.user;
 
 import com.aj.aireview.domain.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +15,7 @@ public class AuthenticatedUser implements UserDetails {
     public AuthenticatedUser(User user) {
         this.user = user;
     }
-    
+
     public User getUser() {
         return user;
     }

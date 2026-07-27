@@ -21,3 +21,7 @@ spring:
 logging:
   level:
     root: INFO
+
+jwt:
+  secret: YOUR_256_BIT_SECRET_KEY
+  expiration: 3600000
