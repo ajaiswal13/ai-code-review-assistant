@@ -9,6 +9,7 @@ import com.aj.aireview.domain.user.entity.Role;
 import com.aj.aireview.domain.user.entity.User;
 import com.aj.aireview.domain.user.repository.UserRepository;
 import com.aj.aireview.security.jwt.JwtService;
+import com.aj.aireview.security.user.AuthenticatedUser;
 import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +40,10 @@ public class AuthenticationService {
               (new UsernamePasswordAuthenticationToken(
                       loginRequest.email(),
                       loginRequest.password()));
-      String token = jwtService.generateToken(authentication);
+
+      AuthenticatedUser authenticatedUser = (AuthenticatedUser) authentication.getPrincipal();
+
+      String token = jwtService.generateToken(authenticatedUser);
 
       return new LoginResponse(token,"accessToken");
     }

@@ -23,5 +23,5 @@ logging:
     root: INFO
 
 jwt:
-  secret: YOUR_256_BIT_SECRET_KEY
+  secret: ${JWT_SECRET}
   expiration: 3600000
