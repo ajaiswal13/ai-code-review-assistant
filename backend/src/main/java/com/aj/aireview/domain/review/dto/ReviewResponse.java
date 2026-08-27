@@ -11,16 +11,21 @@ public record ReviewResponse(
         String language,
         ReviewStatus status,
         Instant createdAt,
-        Instant updatedAt
+        Instant updatedAt,
+        ReviewResultResponse result
 ) {
 
-    public static ReviewResponse from(Review review) {
+    public static ReviewResponse from(
+            Review review,
+            ReviewResultResponse result
+    ) {
         return new ReviewResponse(
                 review.getId(),
                 review.getLanguage(),
                 review.getStatus(),
                 review.getCreatedAt(),
-                review.getUpdatedAt()
+                review.getUpdatedAt(),
+                result
         );
     }
 }

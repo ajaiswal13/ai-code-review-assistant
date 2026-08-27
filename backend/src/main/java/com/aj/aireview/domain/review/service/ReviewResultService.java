@@ -44,8 +44,8 @@ public class ReviewResultService {
 
         for (AIReviewResult.ReviewIssue issue : aiResult.issues()) {
             reviewResult.addIssue(
-                    issue.severity(),
-                    issue.category(),
+                    issue.severity().name(),
+                    issue.category().name(),
                     issue.line(),
                     issue.message(),
                     issue.suggestion()

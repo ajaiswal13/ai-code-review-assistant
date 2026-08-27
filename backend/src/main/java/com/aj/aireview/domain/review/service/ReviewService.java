@@ -2,10 +2,12 @@ package com.aj.aireview.domain.review.service;
 
 import com.aj.aireview.domain.review.dto.CreateReviewRequest;
 import com.aj.aireview.domain.review.dto.ReviewResponse;
+import com.aj.aireview.domain.review.dto.ReviewResultResponse;
 import com.aj.aireview.domain.review.entity.Review;
 import com.aj.aireview.domain.review.event.ReviewCreatedEvent;
 import com.aj.aireview.domain.review.exception.ReviewNotFoundException;
 import com.aj.aireview.domain.review.repository.ReviewRepository;
+import com.aj.aireview.domain.review.repository.ReviewResultRepository;
 import com.aj.aireview.security.user.AuthenticatedUser;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,16 @@ import java.util.UUID;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final ReviewResultRepository reviewResultRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     public ReviewService(
             ReviewRepository reviewRepository,
+            ReviewResultRepository reviewResultRepository,
             ApplicationEventPublisher eventPublisher
     ) {
         this.reviewRepository = reviewRepository;
+        this.reviewResultRepository = reviewResultRepository;
         this.eventPublisher = eventPublisher;
     }
 
@@ -45,7 +50,7 @@ public class ReviewService {
                 new ReviewCreatedEvent(savedReview.getId())
         );
 
-        return ReviewResponse.from(savedReview);
+        return ReviewResponse.from(savedReview, null);
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +62,15 @@ public class ReviewService {
         return reviewRepository
                 .findAllByUserIdOrderByCreatedAtDesc(userId)
                 .stream()
-                .map(ReviewResponse::from)
+                .map(review -> {
+                    ReviewResultResponse result =
+                            reviewResultRepository
+                                    .findByReviewId(review.getId())
+                                    .map(ReviewResultResponse::from)
+                                    .orElse(null);
+
+                    return ReviewResponse.from(review, result);
+                })
                 .toList();
     }
 
@@ -72,6 +85,12 @@ public class ReviewService {
                 .findByIdAndUserId(reviewId, userId)
                 .orElseThrow(ReviewNotFoundException::new);
 
-        return ReviewResponse.from(review);
+        ReviewResultResponse result =
+                reviewResultRepository
+                        .findByReviewId(review.getId())
+                        .map(ReviewResultResponse::from)
+                        .orElse(null);
+
+        return ReviewResponse.from(review, result);
     }
 }

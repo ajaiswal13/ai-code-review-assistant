@@ -1,6 +1,7 @@
 package com.aj.aireview.domain.review.service;
 
 import com.aj.aireview.domain.review.entity.Review;
+import com.aj.aireview.domain.review.exception.ReviewNotFoundException;
 import com.aj.aireview.domain.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -32,10 +33,6 @@ public class ReviewStatusService {
 
     private Review getReview(UUID reviewId) {
         return reviewRepository.findById(reviewId)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "Review not found: " + reviewId
-                        )
-                );
+                .orElseThrow(ReviewNotFoundException::new);
     }
 }

@@ -4,12 +4,17 @@ import com.aj.aireview.domain.ai.AIProvider;
 import com.aj.aireview.domain.ai.AIReviewResult;
 import com.aj.aireview.domain.review.entity.Review;
 import com.aj.aireview.domain.review.repository.ReviewRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 public class ReviewProcessor {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(ReviewProcessor.class);
 
     private final ReviewRepository reviewRepository;
     private final ReviewStatusService reviewStatusService;
@@ -52,9 +57,14 @@ public class ReviewProcessor {
 
         } catch (Exception exception) {
 
+            log.error(
+                    "Review processing failed. reviewId={}",
+                    reviewId,
+                    exception
+            );
+
             reviewStatusService.markFailed(reviewId);
 
-            throw exception;
         }
     }
 }
