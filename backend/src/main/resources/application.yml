@@ -29,3 +29,16 @@ logging:
 jwt:
   secret: ${JWT_SECRET}
   expiration: 3600000
+
+ai:
+  openai:
+    timeout: 30s
+
+resilience4j:
+  retry:
+    instances:
+      aiProvider:
+        max-attempts: 3
+        wait-duration: 1s
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
