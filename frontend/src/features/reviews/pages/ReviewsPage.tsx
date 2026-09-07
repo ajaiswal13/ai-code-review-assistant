@@ -125,7 +125,7 @@ export default function ReviewsPage() {
                 setReviews(data)
             } catch (error) {
                 console.error('Failed to load reviews:', error)
-                setError('Unable to load your reviews. Please try again.')
+                setError('Unable to load your reviews.')
             } finally {
                 setIsLoading(false)
             }

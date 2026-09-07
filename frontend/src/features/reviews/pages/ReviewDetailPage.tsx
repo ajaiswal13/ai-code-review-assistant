@@ -90,7 +90,7 @@ export default function ReviewDetailPage() {
                 return data
             } catch (error) {
                 console.error('Failed to load review:', error)
-                setError('Unable to load this review. Please try again.')
+                setError('Unable to load this review.')
                 return null
             } finally {
                 setIsLoading(false)
