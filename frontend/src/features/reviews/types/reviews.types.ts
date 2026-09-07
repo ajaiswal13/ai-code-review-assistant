@@ -33,3 +33,7 @@ export interface CreateReviewRequest {
     language: string
     code: string
 }
+
+export interface ReviewStatusEvent {
+    status: ReviewStatus
+}
