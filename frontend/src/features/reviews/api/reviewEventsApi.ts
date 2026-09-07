@@ -5,7 +5,9 @@ import { tokenStorage } from '../../../lib/auth/tokenStorage'
 import type { ReviewStatusEvent } from '../types/reviews.types'
 
 interface SubscribeOptions {
-    onStatusChange: (event: ReviewStatusEvent) => void
+    onStatusChange: (
+        event: ReviewStatusEvent,
+    ) => void | Promise<void>
     onError?: (error: unknown) => void
     signal?: AbortSignal
 }
