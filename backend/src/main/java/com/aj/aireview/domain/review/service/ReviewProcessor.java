@@ -2,6 +2,7 @@ package com.aj.aireview.domain.review.service;
 
 import com.aj.aireview.domain.ai.AIProvider;
 import com.aj.aireview.domain.ai.AIReviewResult;
+import com.aj.aireview.domain.knowledge.service.KnowledgeRetrievalService;
 import com.aj.aireview.domain.review.entity.Review;
 import com.aj.aireview.domain.review.repository.ReviewRepository;
 import org.slf4j.Logger;
@@ -20,17 +21,20 @@ public class ReviewProcessor {
     private final ReviewStatusService reviewStatusService;
     private final ReviewResultService reviewResultService;
     private final AIProvider aiProvider;
+    private final KnowledgeRetrievalService knowledgeRetrievalService;
 
     public ReviewProcessor(
             ReviewRepository reviewRepository,
             ReviewStatusService reviewStatusService,
             ReviewResultService reviewResultService,
-            AIProvider aiProvider
+            AIProvider aiProvider,
+            KnowledgeRetrievalService knowledgeRetrievalService
     ) {
         this.reviewRepository = reviewRepository;
         this.reviewStatusService = reviewStatusService;
         this.reviewResultService = reviewResultService;
         this.aiProvider = aiProvider;
+        this.knowledgeRetrievalService = knowledgeRetrievalService;
     }
 
     public void process(UUID reviewId) {
@@ -45,9 +49,15 @@ public class ReviewProcessor {
                             )
                     );
 
+            String knowledgeContext =
+                    knowledgeRetrievalService.retrieveRelevantGuidelines(
+                            review.getCode()
+                    );
+
             AIReviewResult aiResult = aiProvider.review(
                     review.getLanguage(),
-                    review.getCode()
+                    review.getCode(),
+                    knowledgeContext
             );
 
             reviewResultService.saveResult(
