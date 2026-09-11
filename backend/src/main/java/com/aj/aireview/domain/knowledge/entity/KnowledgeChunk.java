@@ -34,16 +34,6 @@ public class KnowledgeChunk {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    /*
-     * pgvector column.
-     *
-     * We are not mapping this as a normal JPA numeric type yet.
-     * We'll handle vector persistence explicitly when we build
-     * the vector repository.
-     */
-    @Column(columnDefinition = "vector(1536)")
-    private float[] embedding;
-
     @Column(nullable = false)
     private Instant createdAt;
 
@@ -77,15 +67,7 @@ public class KnowledgeChunk {
         return content;
     }
 
-    public float[] getEmbedding() {
-        return embedding;
-    }
-
     public Instant getCreatedAt() {
         return createdAt;
-    }
-
-    public void setEmbedding(float[] embedding) {
-        this.embedding = embedding;
     }
 }

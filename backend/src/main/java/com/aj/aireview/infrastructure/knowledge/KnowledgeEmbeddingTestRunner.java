@@ -5,6 +5,7 @@ import com.aj.aireview.domain.knowledge.entity.KnowledgeChunk;
 import com.aj.aireview.domain.knowledge.entity.KnowledgeDocument;
 import com.aj.aireview.domain.knowledge.repository.KnowledgeChunkRepository;
 import com.aj.aireview.domain.knowledge.repository.KnowledgeDocumentRepository;
+import com.aj.aireview.domain.knowledge.repository.KnowledgeVectorRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,15 +18,18 @@ public class KnowledgeEmbeddingTestRunner implements CommandLineRunner {
     private final EmbeddingService embeddingService;
     private final KnowledgeDocumentRepository documentRepository;
     private final KnowledgeChunkRepository chunkRepository;
+    private final KnowledgeVectorRepository vectorRepository;
 
     public KnowledgeEmbeddingTestRunner(
             EmbeddingService embeddingService,
             KnowledgeDocumentRepository documentRepository,
-            KnowledgeChunkRepository chunkRepository
+            KnowledgeChunkRepository chunkRepository,
+            KnowledgeVectorRepository vectorRepository
     ) {
         this.embeddingService = embeddingService;
         this.documentRepository = documentRepository;
         this.chunkRepository = chunkRepository;
+        this.vectorRepository = vectorRepository;
     }
 
     @Override
@@ -61,9 +65,12 @@ public class KnowledgeEmbeddingTestRunner implements CommandLineRunner {
                 content
         );
 
-        chunk.setEmbedding(chunkEmbedding);
-
         chunkRepository.save(chunk);
+
+        vectorRepository.saveEmbedding(
+                chunk.getId(),
+                chunkEmbedding
+        );
 
         // 5. Our user's/review's question
         String query =
@@ -78,25 +85,18 @@ public class KnowledgeEmbeddingTestRunner implements CommandLineRunner {
                         + queryEmbedding.length
         );
 
-        // 7. Convert float[] → pgvector string
-        String queryVector =
-                Arrays.toString(queryEmbedding)
-                        .replace(" ", "");
-
-        // 8. Similarity search
-        List<KnowledgeChunk> results =
-                chunkRepository.findSimilarChunks(
-                        queryVector,
+        List<Long> chunkIds =
+                vectorRepository.findSimilarChunkIds(
+                        queryEmbedding,
                         5
                 );
 
-        // 9. Print retrieved knowledge
-        System.out.println("Retrieved chunks:");
+        System.out.println("Retrieved chunk IDs:");
 
-        for (KnowledgeChunk result : results) {
-            System.out.println(
-                    "- " + result.getContent()
-            );
+        for (Long chunkId : chunkIds) {
+            System.out.println("- " + chunkId);
         }
+
+
     }
 }
