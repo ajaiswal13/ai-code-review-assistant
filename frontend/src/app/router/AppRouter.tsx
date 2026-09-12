@@ -7,6 +7,7 @@ import CreateReviewPage from '../../features/reviews/pages/CreateReviewPage'
 import ReviewDetailPage from '../../features/reviews/pages/ReviewDetailPage'
 import { ProtectedRoute } from '../../features/auth/routes/ProtectedRoute'
 import AuthenticatedLayout from "../layouts/AuthenticationLayout.tsx";
+import KnowledgeUploadPage from "../../features/knowledge/pages/KnowledgeUploadPage.tsx";
 
 function AppRouter() {
     return (
@@ -20,6 +21,7 @@ function AppRouter() {
                      <Route path="/reviews" element={<ReviewsPage />} />
                      <Route path="/reviews/new" element={<CreateReviewPage />} />
                      <Route path="/reviews/:reviewId" element={<ReviewDetailPage />}/>
+                        <Route path="/knowledge/upload" element={<KnowledgeUploadPage />}/>
                     </Route>
                 </Route>
             </Routes>
