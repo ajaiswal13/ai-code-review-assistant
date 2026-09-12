@@ -42,6 +42,9 @@ function getStatusLabel(status: ReviewStatus) {
 
 function getSeverityStyles(severity: string) {
     switch (severity.toUpperCase()) {
+        case 'CRITICAL':
+            return 'bg-red-100 text-red-700'
+
         case 'HIGH':
             return 'bg-red-100 text-red-700'
 
@@ -77,6 +80,7 @@ export default function ReviewDetailPage() {
         if (!reviewId) {
             return
         }
+
         const controller = new AbortController()
 
         const loadReview = async () => {
@@ -218,11 +222,38 @@ export default function ReviewDetailPage() {
 
                     <span
                         className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyles(
-                            review.status,
-                        )}`}
+    review.status,
+)}`}
                     >
-            {getStatusLabel(review.status)}
-          </span>
+                        {getStatusLabel(review.status)}
+                    </span>
+                </div>
+            </div>
+
+            {/* Submitted Code */}
+            <div className="mb-8">
+                <div className="mb-4">
+                    <h2 className="text-xl font-bold text-gray-900">
+                        Submitted Code
+                    </h2>
+
+                    <p className="mt-1 text-sm text-gray-500">
+                        Code submitted for this review.
+                    </p>
+                </div>
+
+                <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow-sm">
+                    <div className="flex items-center justify-between border-b border-gray-700 px-4 py-3">
+                        <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
+                            {review.language}
+                        </span>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                        <pre className="p-5 text-sm leading-6 text-gray-100">
+                            <code>{review.code}</code>
+                        </pre>
+                    </div>
                 </div>
             </div>
 
@@ -274,8 +305,8 @@ export default function ReviewDetailPage() {
                                 <p className="mt-1 text-4xl font-bold text-gray-900">
                                     {review.result.score}
                                     <span className="text-xl font-medium text-gray-400">
-                    /100
-                  </span>
+                                        /100
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -310,23 +341,23 @@ export default function ReviewDetailPage() {
                                 >
                                     <div className="flex items-start justify-between gap-4">
                                         <div className="flex items-center gap-3">
-                      <span
-                          className={`rounded-full px-3 py-1 text-xs font-semibold ${getSeverityStyles(
-                              issue.severity,
-                          )}`}
-                      >
-                        {issue.severity}
-                      </span>
+                                            <span
+                                                className={`rounded-full px-3 py-1 text-xs font-semibold ${getSeverityStyles(
+    issue.severity,
+)}`}
+                                            >
+                                                {issue.severity}
+                                            </span>
 
                                             <span className="text-sm font-medium text-gray-500">
-                        {issue.category}
-                      </span>
+                                                {issue.category}
+                                            </span>
                                         </div>
 
                                         {issue.line !== null && (
                                             <span className="text-xs font-medium text-gray-500">
-                        Line {issue.line}
-                      </span>
+                                                Line {issue.line}
+                                            </span>
                                         )}
                                     </div>
 

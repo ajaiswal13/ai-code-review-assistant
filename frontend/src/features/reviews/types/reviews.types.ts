@@ -23,6 +23,7 @@ export interface ReviewResult {
 export interface Review {
     id: string
     language: string
+    code: string
     status: ReviewStatus
     createdAt: string
     updatedAt: string

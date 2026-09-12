@@ -9,6 +9,7 @@ import java.util.UUID;
 public record ReviewResponse(
         UUID id,
         String language,
+        String code,
         ReviewStatus status,
         Instant createdAt,
         Instant updatedAt,
@@ -22,6 +23,7 @@ public record ReviewResponse(
         return new ReviewResponse(
                 review.getId(),
                 review.getLanguage(),
+                review.getCode(),
                 review.getStatus(),
                 review.getCreatedAt(),
                 review.getUpdatedAt(),
