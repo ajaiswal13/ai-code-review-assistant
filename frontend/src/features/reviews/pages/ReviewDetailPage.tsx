@@ -232,30 +232,33 @@ export default function ReviewDetailPage() {
 
             {/* Submitted Code */}
             <div className="mb-8">
-                <div className="mb-4">
-                    <h2 className="text-xl font-bold text-gray-900">
-                        Submitted Code
-                    </h2>
+                <details className="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                    <summary className="flex cursor-pointer list-none items-center justify-between px-6 py-4 transition hover:bg-gray-50">
+                        <div>
+                            <h2 className="text-base font-semibold text-gray-900">
+                                Submitted Code
+                            </h2>
 
-                    <p className="mt-1 text-sm text-gray-500">
-                        Code submitted for this review.
-                    </p>
-                </div>
+                            <p className="mt-1 text-sm text-gray-500">
+                                {review.language} · Click to expand
+                            </p>
+                        </div>
 
-                <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow-sm">
-                    <div className="flex items-center justify-between border-b border-gray-700 px-4 py-3">
-                        <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
-                            {review.language}
-                        </span>
+                        <span className="ml-4 text-sm text-gray-400 transition-transform group-open:rotate-180">
+                ↓
+            </span>
+                    </summary>
+
+                    <div className="border-t border-gray-200 bg-gray-50">
+                        <div className="overflow-x-auto p-5">
+                <pre className="text-sm leading-6 text-gray-800">
+                    <code>{review.code}</code>
+                </pre>
+                        </div>
                     </div>
-
-                    <div className="overflow-x-auto">
-                        <pre className="p-5 text-sm leading-6 text-gray-100">
-                            <code>{review.code}</code>
-                        </pre>
-                    </div>
-                </div>
+                </details>
             </div>
+
 
             {review.status === 'PENDING' && (
                 <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-8 text-center">
