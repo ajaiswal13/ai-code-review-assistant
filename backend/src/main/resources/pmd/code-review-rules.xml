@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<ruleset name="AI Code Review Rules"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.github.io/schema/ruleset_2_0_0.xsd">
+
+    <description>
+        Rules used by the AI Code Review Assistant for deterministic
+        Java code quality analysis.
+    </description>
+
+    <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
+
+    <rule ref="category/java/codestyle.xml/NoPackage"/>
+
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
+
+    <rule ref="category/java/errorprone.xml/AvoidPrintStackTrace"/>
+
+</ruleset>

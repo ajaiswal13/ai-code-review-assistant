@@ -2,6 +2,7 @@ package com.aj.aireview.infrastructure.ai.openai;
 
 import com.aj.aireview.domain.ai.AIProvider;
 import com.aj.aireview.domain.ai.AIReviewResult;
+import com.aj.aireview.infrastructure.ai.tools.CodeAnalysisTool;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Component;
@@ -14,12 +15,15 @@ public class OpenAIProvider implements AIProvider {
 
     private final ChatClient chatClient;
     private final Duration timeout;
+    private final CodeAnalysisTool codeAnalysisTool;
 
     public OpenAIProvider(
             ChatClient.Builder chatClientBuilder,
+            CodeAnalysisTool codeAnalysisTool,
             @Value("${ai.openai.timeout}") Duration timeout
     ) {
         this.chatClient = chatClientBuilder.build();
+        this.codeAnalysisTool = codeAnalysisTool;
         this.timeout = timeout;
     }
 
@@ -135,6 +139,18 @@ public class OpenAIProvider implements AIProvider {
                 
         28. Do not treat the absence of optional accessibility enhancements
             as a defect.
+            
+                
+        You have access to a static code analysis tool.
+                
+        Before producing the final review, use the static code analysis tool
+        to analyze the submitted source code.
+                
+        Treat the tool's findings as deterministic evidence. Evaluate those
+        findings in the context of the submitted code before reporting them.
+                
+        Do not blindly report every tool finding. Report a finding only when
+        it represents a genuine and meaningful engineering concern.
 
         Severity definitions:
 
@@ -231,6 +247,7 @@ public class OpenAIProvider implements AIProvider {
                 .prompt()
                 .system(systemPrompt)
                 .user(userPrompt)
+                .tools(codeAnalysisTool)
                 .options(OpenAiChatOptions.builder()
                         .timeout(timeout)
                         .maxRetries(0))
